@@ -1,9 +1,9 @@
 use rusty_leetcode::{BTree, TreeNode};
-use std::cell::RefCell;
+use std::cell::{Cell, RefCell};
 use std::rc::Rc;
 
 struct BSTIterator {
-    cur: Rc<RefCell<usize>>,
+    cur: Cell<usize>,
     vec: Vec<i32>,
 }
 /**
@@ -41,19 +41,19 @@ impl BSTIterator {
             }
         }
         BSTIterator {
-            cur: Rc::new(RefCell::new(0)),
+            cur: Cell::new(0),
             vec: result,
         }
     }
 
     fn next(&self) -> i32 {
-        let r = self.vec[*self.cur.borrow()];
-        *self.cur.borrow_mut() += 1;
+        let r = self.vec[self.cur.get()];
+        self.cur.set(self.cur.get() + 1);
         r
     }
 
     fn has_next(&self) -> bool {
-        *self.cur.borrow() < (self.vec).len()
+        self.cur.get() < (self.vec).len()
     }
 }
 
