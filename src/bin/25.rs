@@ -102,6 +102,7 @@ impl Solution {
 #[derive(Debug, Deserialize, Serialize)]
 struct TestCase {
     i: Vec<i32>,
+    k: i32,
     o: Vec<i32>,
 }
 
@@ -158,7 +159,7 @@ fn main() {
             }
         }
 
-        assert_eq!(Solution::reverse_k_group(fake_i_head.next, 2), fake_o_head.next);
+        assert_eq!(Solution::reverse_k_group(fake_i_head.next, case.k), fake_o_head.next);
     }
 }
 
