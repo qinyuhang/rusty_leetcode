@@ -79,3 +79,8 @@ fn main() {
     assert_eq!(bti.next(), 3);
     assert_eq!(bti.has_next(), false);
 }
+
+#[test]
+fn main_test() {
+    main();
+}
