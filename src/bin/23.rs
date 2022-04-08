@@ -115,3 +115,8 @@ fn main() {
         assert_eq!(Solution::merge_k_lists(list), result_fake_head.next);
     }
 }
+
+#[test]
+fn main_test() {
+    main();
+}
