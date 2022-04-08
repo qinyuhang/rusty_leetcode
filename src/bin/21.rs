@@ -1,5 +1,7 @@
 /// https://leetcode.com/problems/merge-two-sorted-lists/
 use rusty_leetcode::ListNode;
+use serde::{Deserialize, Serialize};
+use serde_json;
 
 struct Solution;
 impl Solution {
@@ -49,34 +51,74 @@ impl Solution {
         fake_head.next
     }
 }
+
+
+#[derive(Debug, Deserialize, Serialize)]
+struct TestCase {
+    i: Vec<i32>,
+    j: Vec<i32>,
+    o: Vec<i32>,
+}
 fn main() {
-    let mut t1 = Box::new(ListNode::new(-1));
-    let mut t2 = Box::new(ListNode::new(-1));
 
-    let mut cur = &mut (*t1) as *mut ListNode;
-    for i in [1, 2, 4] {
-        unsafe {
-            let mut tmp = Box::new(ListNode::new(i));
-            let tmp_pt = &mut *tmp as *mut ListNode;
-            (*cur).next = Some(tmp);
-            cur = tmp_pt;
-        }
-    }
+    let test_cases: Vec<TestCase> = serde_json::from_str(r#"
+        [
+            {
+                "i": [],
+                "j": [],
+                "o": []
+            },
+            {
+                "i": [1, 2, 4],
+                "j": [1, 3, 4],
+                "o": [1, 1, 2, 3, 4, 4]
+            }
+        ]
+    "#).unwrap();
 
-    let mut cur = &mut (*t2) as *mut ListNode;
-    for i in [1, 3, 4] {
-        // t1.
-        unsafe {
-            let mut tmp = Box::new(ListNode::new(i));
-            let tmp_pt = &mut *tmp as *mut ListNode;
-            (*cur).next = Some(tmp);
-            cur = tmp_pt;
+    for case in test_cases {
+        let mut t1 = Box::new(ListNode::new(-1));
+        let mut t2 = Box::new(ListNode::new(-1));
+        let mut r = Box::new(ListNode::new(-1));
+    
+        let mut cur = &mut (*t1) as *mut ListNode;
+        for i in case.i {
+            unsafe {
+                let mut tmp = Box::new(ListNode::new(i));
+                let tmp_pt = &mut *tmp as *mut ListNode;
+                (*cur).next = Some(tmp);
+                cur = tmp_pt;
+            }
         }
+    
+        let mut cur = &mut (*t2) as *mut ListNode;
+        for i in case.j {
+            // t1.
+            unsafe {
+                let mut tmp = Box::new(ListNode::new(i));
+                let tmp_pt = &mut *tmp as *mut ListNode;
+                (*cur).next = Some(tmp);
+                cur = tmp_pt;
+            }
+        }
+        
+        let mut cur = &mut (*r) as *mut ListNode;
+        for i in case.o {
+            // t1.
+            unsafe {
+                let mut tmp = Box::new(ListNode::new(i));
+                let tmp_pt = &mut *tmp as *mut ListNode;
+                (*cur).next = Some(tmp);
+                cur = tmp_pt;
+            }
+        }
+        // println!("{:?} {:?}", t1, t2);
+        // [1,2,4]
+        // [1,3,4]
+        // println!("{:?}", Solution::merge_two_lists(t1.next, t2.next));
+        assert_eq!(Solution::merge_two_lists(t1.next, t2.next), r.next);
     }
-    // println!("{:?} {:?}", t1, t2);
-    // [1,2,4]
-    // [1,3,4]
-    println!("{:?}", Solution::merge_two_lists(t1.next, t2.next));
+    
 }
 
 #[test]
