@@ -161,3 +161,8 @@ fn main() {
         assert_eq!(Solution::reverse_k_group(fake_i_head.next, 2), fake_o_head.next);
     }
 }
+
+#[test]
+fn main_test() {
+    main();
+}

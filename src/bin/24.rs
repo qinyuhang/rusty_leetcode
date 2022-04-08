@@ -156,3 +156,8 @@ fn main() {
         assert_eq!(Solution::swap_pairs(fake_i_head.next), fake_o_head.next);
     }
 }
+
+#[test]
+fn main_test() {
+    main();
+}
