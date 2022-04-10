@@ -4,6 +4,7 @@
 */
 use std::cell::RefCell;
 use std::rc::Rc;
+use std::fmt::Display;
 
 /// TreeNode is leetcode provide data struct
 #[derive(Debug, PartialEq, Eq, Clone)]
@@ -84,5 +85,21 @@ impl ListNode {
     #[inline]
     pub fn new(val: i32) -> Self {
         ListNode { next: None, val }
+    }
+}
+
+impl Display for ListNode {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let mut output = String::new();
+        output.push_str(format!("LinkedList: [{}", self.val).as_str());
+        if self.next.is_some() {
+            let mut cur = self.next.as_ref();
+            while cur.is_some() {
+                output.push_str(format!(", {}", cur.unwrap().val).as_str());
+                cur = cur.unwrap().next.as_ref();
+            }
+        }
+        output.push_str("]");
+        f.write_str(&output)
     }
 }
