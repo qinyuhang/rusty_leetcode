@@ -14,33 +14,35 @@ impl Solution {
         if root.is_none() {
             return result;
         }
+
         result.push(vec![]);
-        node_stack.push_back(Rc::clone(&root.as_ref().unwrap()));
+        node_stack.push_back((0, Rc::clone(&root.as_ref().unwrap())));
+
         let mut node;
-        let mut cur_level = 0;
+
         while node_stack.len() != 0 {
             node = node_stack.pop_front();
-            let mut next_level = cur_level;
-            if node_stack.len() == 0 {
-                next_level = cur_level + 1;
+
+            if let Some((cur_level, tmp)) = node {
+                if tmp.borrow().left.is_some() {
+                    node_stack.push_back((
+                        cur_level + 1,
+                        Rc::clone(&tmp.borrow().left.as_ref().unwrap()),
+                    ));
+                }
+
+                if result.get(cur_level).is_none() {
+                    result.push(vec![]);
+                }
+                result[cur_level].push(tmp.borrow().val);
+
+                if tmp.borrow().right.is_some() {
+                    node_stack.push_back((
+                        cur_level + 1,
+                        Rc::clone(&tmp.borrow().right.as_ref().unwrap()),
+                    ));
+                }
             }
-            let tmp = node;
-            if tmp.as_ref().unwrap().borrow().left.is_some() {
-                node_stack.push_back(Rc::clone(
-                    &tmp.as_ref().unwrap().borrow().left.as_ref().unwrap(),
-                ));
-            }
-            if result.get(cur_level).is_none() {
-                result.push(vec![]);
-            }
-            result[cur_level].push(tmp.as_ref().unwrap().borrow().val);
-            if tmp.as_ref().unwrap().borrow().right.is_some() {
-                node_stack.push_back(Rc::clone(
-                    &tmp.as_ref().unwrap().borrow().right.as_ref().unwrap(),
-                ));
-            }
-            // 时机不对
-            cur_level = next_level;
         }
         result
     }
@@ -49,13 +51,15 @@ impl Solution {
 #[derive(Serialize, Deserialize)]
 struct TestCase {
     case: Vec<i32>,
+    o: Vec<Vec<i32>>,
 }
 
 fn main() {
     let test_cases: Vec<TestCase> = serde_json::from_str(
         r#"[
         {
-            "case": [3, 9, 20, 15, 7]
+            "case": [9, 3, 20, 15, 7],
+            "o": [[9], [3, 20], [7, 15]]
         }
     ]"#,
     )
@@ -67,7 +71,9 @@ fn main() {
             bt.insert(j);
         }
         // println!("{:?}", bt);
-        println!("{:?}", Solution::level_order(bt.root));
+        // println!("{:?}", Solution::level_order(bt.root));
+
+        assert_eq!(Solution::level_order(bt.root), i.o);
     }
 }
 
