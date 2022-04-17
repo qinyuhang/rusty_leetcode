@@ -90,7 +90,7 @@ fn main() {
         for l1_cur in case.l1 {
             unsafe {
                 let mut node = Box::new(ListNode::new(l1_cur));
-                let mut node_pt = &mut *node as *mut ListNode;
+                let node_pt = &mut *node as *mut ListNode;
                 (*l1_pt).next = Some(node);
                 l1_pt = node_pt;
             }
@@ -99,7 +99,7 @@ fn main() {
         for l2_cur in case.l2 {
             unsafe {
                 let mut node = Box::new(ListNode::new(l2_cur));
-                let mut node_pt = &mut *node as *mut ListNode;
+                let node_pt = &mut *node as *mut ListNode;
                 (*l2_pt).next = Some(node);
                 l2_pt = node_pt;
             }
@@ -108,7 +108,7 @@ fn main() {
         for o_cur in case.o {
             unsafe {
                 let mut node = Box::new(ListNode::new(o_cur));
-                let mut node_pt = &mut *node as *mut ListNode;
+                let node_pt = &mut *node as *mut ListNode;
                 (*o_pt).next = Some(node);
                 o_pt = node_pt;
             }
