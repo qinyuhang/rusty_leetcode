@@ -15,7 +15,7 @@ impl Solution {
             return r;
         }
 
-        let mut root = (
+        let root = (
             vec![(*root.as_ref().unwrap()).borrow().val],
             Some(Rc::clone(root.as_ref().unwrap())),
         );
@@ -24,7 +24,7 @@ impl Solution {
         q.push_back(root);
 
         while !q.is_empty() {
-            let (mut c, mut node) = q.pop_front().unwrap();
+            let (c, node) = q.pop_front().unwrap();
 
             // if left and right is none
             // it means we are reaching a leaf node
