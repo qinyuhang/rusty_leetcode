@@ -55,7 +55,7 @@ impl Codec {
             return None;
         }
 
-        let mut root = Rc::new(RefCell::new(TreeNode::new(
+        let root = Rc::new(RefCell::new(TreeNode::new(
             chars.pop_front().unwrap().parse().unwrap(),
         )));
 
@@ -63,7 +63,7 @@ impl Codec {
         queue.push_back(Rc::clone(&root));
 
         while !queue.is_empty() {
-            let mut cur = queue.pop_front().unwrap();
+            let cur = queue.pop_front().unwrap();
 
             let left_ch = chars.pop_front();
             let right_ch = chars.pop_front();
