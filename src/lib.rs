@@ -3,7 +3,7 @@
    I create to help me solve the problems
 */
 use std::cell::RefCell;
-use std::fmt::{Debug, Display, Write};
+use std::fmt::{Debug, Display};
 use std::rc::Rc;
 
 /// TreeNode is leetcode provide data struct
@@ -50,7 +50,7 @@ impl TreeNode {
 }
 
 /// This is a binary search tree
-#[derive(Debug)]
+#[derive(Debug, PartialEq, Eq)]
 pub struct BTree {
     pub root: Option<Rc<RefCell<TreeNode>>>,
 }
