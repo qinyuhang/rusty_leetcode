@@ -20,17 +20,18 @@ impl Solution {
         let mut fake_head = Box::new(ListNode::new(-1));
         let mut build_cur = &mut *fake_head as *mut ListNode;
 
-        let mut jin_wei = 0;
+        // 进位
+        let mut carry = 0;
 
-        while l1.is_some() || l2.is_some() || jin_wei != 0 {
+        while l1.is_some() || l2.is_some() || carry != 0 {
             let t1 = l1.as_ref().unwrap_or(&Box::new(ListNode::new(0))).val;
             let t2 = l2.as_ref().unwrap_or(&Box::new(ListNode::new(0))).val;
 
 
-            let mut node = Box::new(ListNode::new((jin_wei + t1 + t2) % 10));
+            let mut node = Box::new(ListNode::new((carry + t1 + t2) % 10));
             let node_pt = &mut *node as *mut ListNode;
 
-            jin_wei = (t1 + t2 + jin_wei) / 10;
+            carry = (t1 + t2 + carry) / 10;
             unsafe {
                 (*build_cur).next = Some(node);
             }
