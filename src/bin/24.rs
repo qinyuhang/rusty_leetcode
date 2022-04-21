@@ -6,6 +6,18 @@ use serde_json;
 
 struct Solution;
 impl Solution {
+    pub fn revers_list_node_simple(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
+        let mut node = head;
+        let mut reversed = None;
+
+        while let Some(mut cur) = node {
+            node = cur.next;
+            cur.next = reversed;
+            reversed = Some(cur);
+        }
+
+        reversed
+    }
     pub fn revers_list_node(head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
         if head.is_none() {
             return None;
@@ -132,6 +144,7 @@ fn main() {
         let mut i_cur_pt = &mut *fake_i_head as *mut ListNode;
         let mut o_cur_pt = &mut *fake_o_head as *mut ListNode;
 
+        
         for i in case.i {
             unsafe {
                 let mut node = Box::new(ListNode::new(i));
@@ -150,6 +163,7 @@ fn main() {
             }
         }
 
+        // println!("{:?}", Solution::revers_list_node_simple(fake_i_head.next));
         // println!("{:?}", fake_i_head.next);
         // println!("{:?}", Solution::revers_list_node(fake_i_head.next));
 
