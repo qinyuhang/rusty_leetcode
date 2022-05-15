@@ -180,6 +180,23 @@ impl ListNode {
     pub fn new(val: i32) -> Self {
         ListNode { next: None, val }
     }
+
+    pub fn from_iter<T: IntoIterator<Item = i32>>(iter: T) -> Option<Box<ListNode>> {
+        let mut fake_head = Box::new(ListNode::new(-1));
+
+        let mut tmp = &mut *fake_head as *mut ListNode;
+        for val in iter {
+            let mut node = Box::new(ListNode::new(val));
+            let node_ptr = &mut *node as *mut ListNode;
+
+            unsafe {
+                (*tmp).next = Some(node);
+            }
+            tmp = node_ptr;
+        }
+
+        fake_head.next
+    }
 }
 
 impl Display for ListNode {
